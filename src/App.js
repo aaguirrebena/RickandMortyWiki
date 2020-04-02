@@ -64,10 +64,31 @@ class App extends Component {
     // if(filter != "character") return null;
     const url = `https://rickandmortyapi.com/api/character/?page=${page}`;
     const url_character = `https://rickandmortyapi.com/api/character/?page=${page}&name=${filter}`;
-    const url_location = `https://rickandmortyapi.com/api/location/?name=${filter}`;
+    const url_location = `https://rickandmortyapi.com/api/location/?page=${page}&name=${filter}`;
     const url_episode = `https://rickandmortyapi.com/api/episode/?episode=${filter}`;
 
     // console.log(url);
+    fetch(url_character)
+    .then(response => response.json())
+    .then(result => this.setState({ characters : result.results , max_page : result.info.pages }) )
+    .catch((error) => {
+      this.setState({ characters : [], requestFailed: true })
+    })
+
+    fetch(url_location)
+    .then(response => response.json())
+    .then(result => this.setState({ locations : result.results , max_page : result.info.pages }) )
+    .catch((error) => {
+      this.setState({ locations : [], requestFailed: true })
+    })
+
+    fetch(url_episode)
+    .then(response => response.json())
+    .then(result => this.setState({ episodes : result.results , max_page : result.info.pages }) )
+    .catch((error) => {
+      this.setState({ episodes : [], requestFailed: true })
+    })
+
     if (filter === "character"){
     fetch(url)
     .then(response => response.json())
@@ -76,26 +97,6 @@ class App extends Component {
       this.setState({ requestFailed: true })
   })}
 
-    fetch(url_character)
-    .then(response => response.json())
-    .then(result => this.setState({ characters : result.results , max_page : result.info.pages }) )
-    .catch((error) => {
-      this.setState({ characters : [], requestFailed: true })
-  })
-
-    fetch(url_location)
-    .then(response => response.json())
-    .then(result => this.setState({ locations : result.results , max_page : result.info.pages }) )
-    .catch((error) => {
-      this.setState({ locations : [], requestFailed: true })
-  })
-
-    fetch(url_episode)
-      .then(response => response.json())
-      .then(result => this.setState({ episodes : result.results , max_page : result.info.pages }) )
-      .catch((error) => {
-        this.setState({ episodes : [], requestFailed: true })
-    })
   }
 
   render () {
