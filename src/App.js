@@ -135,7 +135,7 @@ class App extends Component {
       .catch((error) => {
         this.setState({ episodes : [], requestEp_Failed: true })
       })
-      console.log(this.state.episodes)
+      // console.log(this.state.episodes)
       // if (this.state.requestEp_Failed === false){
       //   this.state.episodes.map((episode) =>
       //                       fetch(episode.characters)

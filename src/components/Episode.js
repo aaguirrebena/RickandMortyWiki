@@ -12,7 +12,7 @@ const EpisodeInfo = (props) => {
     function handle_click (e) {
         e.preventDefault();
 
-        props.searchData("rick", "1");
+        this.props.searchData("rick", "1");
     }
     // const listItems = charNames.map((a) =>  <li>{a}</li>);
     return (
