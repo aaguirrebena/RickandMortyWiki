@@ -1,6 +1,6 @@
 import React from 'react';
 
-const PlanetInfo = (props) => {
+const PlanetInfo = props => {
 
     const {name, type, dimension, residents} = props.location;
 

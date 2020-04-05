@@ -1,9 +1,9 @@
 import React from 'react';
 
-const CharInfo = (props) => {
+const CharInfo = props => {
 
     const {url, image, name, species, status, type, gender, origin, location, episode} = props.character;
-
+    // console.log(origin)
     return (
         <div className="row">
             <div className="col-4">
