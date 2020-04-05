@@ -10,6 +10,7 @@ class App extends Component {
     episodes : [],
     characters : [],
     locations : [],
+    locations_chars : [],
     page : '1', // first page
     max_page : '' // n° pages request
   }
@@ -109,7 +110,7 @@ class App extends Component {
     else if (filter === "home_page"){
       fetch(`https://rickandmortyapi.com/api/episode?page=${this.state.page}`)
       .then(response => response.json())
-      .then(result => this.setState({ episodes : result.results , max_page : result.info.pages, requestEpFailed: false }) )
+      .then(result => this.setState({ episodes : result.results , max_page : result.info.pages, requestEp_Failed: false }) )
     }
 
     else if (filter != ""){
@@ -130,10 +131,21 @@ class App extends Component {
 
       fetch(url_episode)
       .then(response => response.json())
-      .then(result => this.setState({ episodes : result.results , max_page : result.info.pages, requestEpFailed: false }) )
+      .then(result => this.setState({ episodes : result.results, max_page : result.info.pages, requestEp_Failed: false }) )
       .catch((error) => {
-        this.setState({ episodes : [], requestEpFailed: true })
+        this.setState({ episodes : [], requestEp_Failed: true })
       })
+      console.log(this.state.episodes)
+      // if (this.state.requestEp_Failed === false){
+      //   this.state.episodes.map((episode) =>
+      //                       fetch(episode.characters)
+      //                       .then(response => response.json())
+      //                       .then(result => this.setState({ locations_chars: {id: result.id, name: result.name, url: episode.url} }))
+      //                       )
+      //   console.log(this.state.locations_chars)
+      //   this.state.episodes.push(this.state.locations_chars)
+      // }
+
     }
 
   }

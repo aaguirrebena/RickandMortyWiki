@@ -35,7 +35,7 @@ const EpisodeInfo = (props) => {
                         <p className="card-text">Characters: </p>
                         <ul>
                             {characters.map((c) =>
-                                <li><a onClick={handle_click} className="card-text"> {c} </a></li>
+                                <li><button onClick={handle_click} className="card-text"> {c} </button></li>
                             )}
                             {/* <li><a onClick={handle_click}>
                                 Click me! </a></li> */}
