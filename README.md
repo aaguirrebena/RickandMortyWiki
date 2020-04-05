@@ -7,9 +7,10 @@ Página en donde se pueden buscar 3 tipos de información asociados a Rick and m
 - Characters: se muestran todos los personajes con el nombre escrito en el buscador, si existen 2 personajes con nombre igual, se mostrarán ambos.
 - Locations: se busca un lugar a partir del nombre, se mostraran todas las coincidencias.
 
-Se encuentra en: 
-[App en linea][-https://mortyrickapp.herokuapp.com/)]
+Se puede iniciar de maner locar escribiendo en terminal desde directorio correspondiente:
 
-Tambien se puede iniciar con comando:
 `npm start`
 
+O bien se puede ingresar a través del siguiente [link][blog].
+
+[blog]: https://mortyrickapp.herokuapp.com/
