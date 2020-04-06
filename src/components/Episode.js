@@ -43,8 +43,11 @@ const EpisodeInfo = (props) => {
 
 
     function handle_click (ids) {
-
-        props.searchData("character_id", "1", `${ids}`);
+        const use = ids.split("/");
+        const len = use.length-1
+        const id = use[len]
+        // console.log(use, len, id)
+        props.searchData("character_id", "1", `${id}`);
     }
     // const listItems = charNames.map((a) =>  <li>{a}</li>);
     return (
@@ -68,7 +71,7 @@ const EpisodeInfo = (props) => {
                         <p className="card-text">Characters: </p>
                         <ul>
                             {characters.map(c =>
-                                <li><a href="#" onClick={() => handle_click(c.substr(-2))} className="card-text "> {c} </a></li>
+                                <li><a href="#" onClick={() => handle_click(c)} className="card-text "> {c} </a></li>
                             )}
                             {/* <li><a onClick={handle_click}>
                                 Click me! </a></li> */}

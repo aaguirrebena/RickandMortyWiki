@@ -15,8 +15,11 @@ const PlanetInfo = props => {
     //     .then(result => ({id: result.id, name: result.name}))});
 
     function handle_click (ids) {
+        const use = ids.split("/");
+        const len = use.length-1
+        const id = use[len]
 
-        props.searchData("character_id", "1", `${ids}`);
+        props.searchData("character_id", "1", `${id}`);
     }
 
     return (
@@ -37,7 +40,7 @@ const PlanetInfo = props => {
                         <p className="card-text">Residents: </p>
                         <ul>
                         {residents.map(r =>
-                                <li><a href= "#" onClick={() => handle_click(r.substr(-2))} className="card-text "> {r}  </a></li>
+                                <li><a href= "#" onClick={() => handle_click(r)} className="card-text "> {r}  </a></li>
                             )}
                         </ul>
                     </div>

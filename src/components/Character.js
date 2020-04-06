@@ -15,7 +15,11 @@ const CharInfo = props => {
     //     .then(result => ({id: result.id, name: result.name}))});
 
     function handle_episode (ids) {
-        props.searchData("episode_id", "1", `${ids}`)
+        const use = ids.split("/");
+        const len = use.length-1
+        const id = use[len]
+
+        props.searchData("episode_id", "1", `${id}`)
 
     }
 
@@ -54,7 +58,7 @@ const CharInfo = props => {
                         <p className="card-text">Episodes: </p>
                         <ul>
                             {episode.map(e =>
-                                <li><a href= "#" onClick={() => handle_episode(e.substr(-2))} className="card-text "> {e} </a></li>
+                                <li><a href= "#" onClick={() => handle_episode(e)} className="card-text "> {e} </a></li>
                             )}
                         </ul>
                     </div>
