@@ -2,17 +2,7 @@ import React, {useEffect} from 'react';
 
 const CharInfo = props => {
 
-    const {url, image, name, species, status, type, gender, origin, location, episode} = props.character;
-
-    // async function getCharAsync(url)
-    // {
-    //   let response = await fetch(url);
-    //   let result = await response.json()
-    //   return result;
-    // }
-    // const episode_name = episode.forEach(ep => {
-    //     getCharAsync(ep)
-    //     .then(result => ({id: result.id, name: result.name}))});
+    const {image, name, species, status, type, gender, origin, location, episode} = props.character;
 
     function handle_episode (ids) {
         const use = ids.split("/");
@@ -20,7 +10,6 @@ const CharInfo = props => {
         const id = use[len]
 
         props.searchData("episode_id", "1", `${id}`)
-
     }
 
     function handle_origin (e) {

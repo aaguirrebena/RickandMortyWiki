@@ -4,16 +4,6 @@ const PlanetInfo = props => {
 
     const {name, type, dimension, residents} = props.location;
 
-    // async function getCharAsync(url)
-    // {
-    //   let response = await fetch(url);
-    //   let result = await response.json()
-    //   return result;
-    // }
-    // const res_name = residents.forEach(char => {
-    //     getCharAsync(char)
-    //     .then(result => ({id: result.id, name: result.name}))});
-
     function handle_click (ids) {
         const use = ids.split("/");
         const len = use.length-1
@@ -36,7 +26,6 @@ const PlanetInfo = props => {
             <div className="col-8">
                 <div className="card">
                     <div className="card-body">
-                        {/* {console.log(listItems)} */}
                         <p className="card-text">Residents: </p>
                         <ul>
                         {residents.map(r =>

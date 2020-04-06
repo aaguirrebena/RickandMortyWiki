@@ -68,19 +68,18 @@ class App extends Component {
     const filter = this.state.filter;
     const page = this.state.page;
     const ids = this.state.ids;
+    const url_character = `https://integracion-rick-morty-api.herokuapp.com/api/character/?page=${page}&name=${filter}`;
+    const url_character_id = `https://integracion-rick-morty-api.herokuapp.com/api/character/${ids}`;
 
-    const url_character = `https://rickandmortyapi.com/api/character/?page=${page}&name=${filter}`;
-    const url_character_id = `https://rickandmortyapi.com/api/character/${ids}`;
 
+    const url_location = `https://integracion-rick-morty-api.herokuapp.com/api/location/?page=${page}&name=${filter}`;
+    const url_location_id = `https://integracion-rick-morty-api.herokuapp.com/api/location/${ids}`
 
-    const url_location = `https://rickandmortyapi.com/api/location/?page=${page}&name=${filter}`;
-    const url_location_id = `https://rickandmortyapi.com/api/location/${ids}`
-
-    const url_episode = `https://rickandmortyapi.com/api/episode/?episode=${filter}`;
-    const url_episode_id = `https://rickandmortyapi.com/api/episode/${ids}`
+    const url_episode = `https://integracion-rick-morty-api.herokuapp.com/api/episode/?episode=${filter}`;
+    const url_episode_id = `https://integracion-rick-morty-api.herokuapp.com/api/episode/${ids}`
 
     if (filter === "home_page"){
-      fetch(`https://rickandmortyapi.com/api/episode?page=${this.state.page}`)
+      fetch(`https://integracion-rick-morty-api.herokuapp.com/api/episode?page=${this.state.page}`)
       .then(response => response.json())
       .then(result => this.setState({ episodes : result.results , max_page : result.info.pages, requestEp_Failed: false }) )
     }
@@ -111,7 +110,7 @@ class App extends Component {
     }
 
 
-    else if (filter != "location_id"){
+    else if (filter != ""){
 
       fetch(url_character)
       .then(response => response.json())

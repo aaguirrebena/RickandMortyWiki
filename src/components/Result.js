@@ -11,15 +11,9 @@ class Response extends Component {
         const locations = this.props.locations;
         const episodes = this.props.episodes;
 
-        // console.log(characters);
-
         return (
             <React.Fragment>
                 <div className="col-12"> {/* p-5 row */}
-
-                    {/* <EpisodeInfo
-                        searchData={this.props.searchData}
-                    /> */}
 
                     {characters.map(character => (
                         <CharInfo
@@ -28,7 +22,6 @@ class Response extends Component {
                             searchData={this.props.searchData}
                         />
                     ) ) }
-
 
                     {locations.map(location => (
                         <PlanetInfo

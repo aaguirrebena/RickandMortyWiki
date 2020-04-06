@@ -6,7 +6,6 @@ class Wiki extends Component {
 
     handle = (e) => {
         e.preventDefault();
-
         //Get the input value
         const filter = this.searchRef.current.value;
         const page = 1;
