@@ -2,32 +2,45 @@ import React, {useState, useEffect} from 'react';
 
 const EpisodeInfo = (props) => {
 
-    const [charArray, setCharArray] = useState([]);
+    // const [charArray, setCharArray] = useState([]);
     const {name, air_date, episode, characters} = props.episode;
 
-    // const per = async () => {
-    //     let dataArray = characters.map(c =>  fetch(c))
+    // useEffect(async () => {
+    //     const dataArray = characters.map(c =>  fetch(c)
+    //     .then(response => response.json())
+    //     .then(result => ({id: result.id, name: result.name})))
     //     await Promise.all([dataArray])
+    //     setCharArray(dataArray)
+    // }, [])
 
-    //     dataArray = dataArray.map(data => {
-    //         const result = data.json();
-    //         return ({id: result.id, name: result.name})
-    //     })}
 
-    // const usar = per();
+
+        // dataArray = dataArray.map(data => {
+        //     const result = data.json();
+        //     return ({id: result.id, name: result.name})
+        // })}
+
     // async function getCharAsync(url)
     // {
     //   let response = await fetch(url);
     //   let result = await response.json()
     //   return result;
     // }
-    // const charNames = characters.forEach(char => {
+    // const charNames = characters.map(char => {
     //     getCharAsync(char)
     //     .then(result => ({id: result.id, name: result.name}))});
 
-    // const charNames =   characters.forEach((c) =>  fetch(c)
-    //                         .then(response => response.json())
-    //                         .then(result => ({id: result.id, name: result.name, url: c})));
+    // const charNames = []
+
+    // characters.forEach((c) => fetch(c)
+    //                     .then(response => response.json())
+    //                     .then(result => charNames.push({id: result.id, name: result.name})));
+
+    // Promise.all([charNames])
+    //     .then(results => {
+    //      console.log(results);
+    //  })
+
 
     function handle_click (ids) {
 
@@ -51,7 +64,7 @@ const EpisodeInfo = (props) => {
                         {/* {console.log(characters)} */}
                         {/* {console.log(charNames[0])} */}
                         {/* {console.log(charNames)} */}
-                        {/* {console.log(usar)} */}
+                        {/* {console.log(charNames)} */}
                         <p className="card-text">Characters: </p>
                         <ul>
                             {characters.map(c =>

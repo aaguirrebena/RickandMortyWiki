@@ -37,7 +37,7 @@ const PlanetInfo = props => {
                         <p className="card-text">Residents: </p>
                         <ul>
                         {residents.map(r =>
-                                <li><a href= "#" onClick={() => handle_click(r)} className="card-text "> {r}  </a></li>
+                                <li><a href= "#" onClick={() => handle_click(r.substr(-2))} className="card-text "> {r}  </a></li>
                             )}
                         </ul>
                     </div>
