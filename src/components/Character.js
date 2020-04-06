@@ -1,9 +1,36 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
 const CharInfo = props => {
 
     const {url, image, name, species, status, type, gender, origin, location, episode} = props.character;
-    // console.log(origin)
+
+    // async function getCharAsync(url)
+    // {
+    //   let response = await fetch(url);
+    //   let result = await response.json()
+    //   return result;
+    // }
+    // const episode_name = episode.forEach(ep => {
+    //     getCharAsync(ep)
+    //     .then(result => ({id: result.id, name: result.name}))});
+
+    function handle_episode (ids) {
+        props.searchData("episode_id", "1", `${ids}`)
+
+    }
+
+    function handle_origin (e) {
+        e.preventDefault();
+
+        props.searchData(origin.name, "1", "")
+    }
+
+    function handle_location (e) {
+        e.preventDefault();
+
+        props.searchData(location.name, "1", "")
+    }
+
     return (
         <div className="row">
             <div className="col-4">
@@ -15,8 +42,8 @@ const CharInfo = props => {
                         <p className="card-text">Status: {status} </p>
                         <p className="card-text">Type: {type} </p>
                         <p className="card-text">Gender: {gender} </p>
-                        <p><a href={origin.url} className="card-text">Origin: {origin.name} </a></p>
-                        <p><a href={location.url} className="card-text">Location: {location.name} </a></p>
+                        <p><a href= "#" onClick={handle_origin} className="card-text">Origin: {origin.name} </a></p>
+                        <p><a href= "#" onClick={handle_location} className="card-text">Location: {location.name} </a></p>
                         <a href={image} target="_blank" className="btn btn-primary btn-block">Character View </a>
                     </div>
                 </div>
@@ -24,11 +51,10 @@ const CharInfo = props => {
             <div className="col-8">
                 <div className="card">
                     <div className="card-body">
-                        {/* {console.log(listItems)} */}
                         <p className="card-text">Episodes: </p>
                         <ul>
                             {episode.map(e =>
-                                <li><a href={e} className="card-text"> {e} </a></li>
+                                <li><a href= "#" onClick={() => handle_episode(e.substr(-2))} className="card-text "> {e} </a></li>
                             )}
                         </ul>
                     </div>

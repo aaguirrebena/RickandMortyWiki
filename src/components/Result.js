@@ -25,6 +25,7 @@ class Response extends Component {
                         <CharInfo
                             key={character.id}
                             character={character}
+                            searchData={this.props.searchData}
                         />
                     ) ) }
 
@@ -33,6 +34,7 @@ class Response extends Component {
                         <PlanetInfo
                             key={location.id}
                             location={location}
+                            searchData={this.props.searchData}
                         />
                     ) ) }
 
@@ -40,9 +42,11 @@ class Response extends Component {
                         <EpisodeInfo
                             key={episode.id}
                             episode={episode}
+                            searchData={this.props.searchData}
                         />
                     ) ) }
                 </div>
+
                 <Pages
                     nextPage={this.props.nextPage}
                     previewPage={this.props.previewPage}

@@ -4,6 +4,21 @@ const PlanetInfo = props => {
 
     const {name, type, dimension, residents} = props.location;
 
+    // async function getCharAsync(url)
+    // {
+    //   let response = await fetch(url);
+    //   let result = await response.json()
+    //   return result;
+    // }
+    // const res_name = residents.forEach(char => {
+    //     getCharAsync(char)
+    //     .then(result => ({id: result.id, name: result.name}))});
+
+    function handle_click (ids) {
+
+        props.searchData("character_id", "1", `${ids}`);
+    }
+
     return (
         <div className="row">
             <div className="col-4">
@@ -22,7 +37,7 @@ const PlanetInfo = props => {
                         <p className="card-text">Residents: </p>
                         <ul>
                         {residents.map(r =>
-                                <li><a href={r} className="card-text"> {r} </a></li>
+                                <li><a href= "#" onClick={() => handle_click(r)} className="card-text "> {r}  </a></li>
                             )}
                         </ul>
                     </div>

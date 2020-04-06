@@ -54,38 +54,42 @@ class App extends Component {
     });
   }
 
-  searchData =  (filter, page) => {
+  searchData =  (filter, page, ids) => {
     this.setState({
       filter,
-      page
+      page,
+      ids
     }, () =>{
       this.apiRequest();
     })
   }
 
   apiRequest = () => {
-    //"https://rickandmortyapi.com/api/{}" -> sample request
     const filter = this.state.filter;
     const page = this.state.page;
     const ids = this.state.ids;
 
-    // const url = `https://rickandmortyapi.com/api/episode/?page=${page}`;
-
     const url_character = `https://rickandmortyapi.com/api/character/?page=${page}&name=${filter}`;
-    const url_character_id = `https://rickandmortyapi.com/api/character/2`;
+    const url_character_id = `https://rickandmortyapi.com/api/character/${ids}`;
 
 
     const url_location = `https://rickandmortyapi.com/api/location/?page=${page}&name=${filter}`;
-    const url_location_id = `https://rickandmortyapi.com/api/location/3`
+    const url_location_id = `https://rickandmortyapi.com/api/location/${ids}`
 
     const url_episode = `https://rickandmortyapi.com/api/episode/?episode=${filter}`;
-    const url_episode_id = `https://rickandmortyapi.com/api/episode/22`
+    const url_episode_id = `https://rickandmortyapi.com/api/episode/${ids}`
 
-    if (filter === "character_id"){
+    if (filter === "home_page"){
+      fetch(`https://rickandmortyapi.com/api/episode?page=${this.state.page}`)
+      .then(response => response.json())
+      .then(result => this.setState({ episodes : result.results , max_page : result.info.pages, requestEp_Failed: false }) )
+    }
+
+    else if (filter === "character_id"){
         fetch(url_character_id)
         .then(response => response.json())
         .then(result => this.setState({ characters : [{id: result.id, url: result.url, image: result.image, name: result.name, species: result.species, status: result.status, type: result.type, gender: result.gender, origin: result.origin, location: result.location,
-        episode: result.episode}], requestCharId_Failed: false }) )
+        episode: result.episode}], locations: [], episodes: [], requestCharId_Failed: false }) )
         .catch((error) => { this.setState({ requestCharId_Failed: true })
         })
     }
@@ -93,7 +97,7 @@ class App extends Component {
     else if (filter === "location_id"){
       fetch(url_location_id)
       .then(response => response.json())
-      .then(result => this.setState({ locations : [{id: result.id, name: result.name, type: result.type, dimension: result.dimension, residents: result.residents}], requestLocId_Failed: false  }) )
+      .then(result => this.setState({ locations : [{id: result.id, name: result.name, type: result.type, dimension: result.dimension, residents: result.residents}], characters: [], requestLocId_Failed: false  }) )
       .catch((error) => { this.setState({ requestLocId_Failed: true })
       })
     }
@@ -101,19 +105,13 @@ class App extends Component {
     else if (filter === "episode_id"){
       fetch(url_episode_id)
       .then(response => response.json())
-      .then(result => this.setState({ episodes : [{id: result.id, name:
-         result.name, air_date: result.air_date, episode: result.episode, characters: result.characters}], requestEpId_Failed: false  }) )
+      .then(result => this.setState({ episodes : [{id: result.id, name: result.name, air_date: result.air_date, episode: result.episode, characters: result.characters}], characters: [], requestEpId_Failed: false  }) )
       .catch((error) => { this.setState({ requestEpId_Failed: true })
       })
     }
 
-    else if (filter === "home_page"){
-      fetch(`https://rickandmortyapi.com/api/episode?page=${this.state.page}`)
-      .then(response => response.json())
-      .then(result => this.setState({ episodes : result.results , max_page : result.info.pages, requestEp_Failed: false }) )
-    }
 
-    else if (filter != ""){
+    else if (filter != "location_id"){
 
       fetch(url_character)
       .then(response => response.json())
@@ -135,16 +133,6 @@ class App extends Component {
       .catch((error) => {
         this.setState({ episodes : [], requestEp_Failed: true })
       })
-      // console.log(this.state.episodes)
-      // if (this.state.requestEp_Failed === false){
-      //   this.state.episodes.map((episode) =>
-      //                       fetch(episode.characters)
-      //                       .then(response => response.json())
-      //                       .then(result => this.setState({ locations_chars: {id: result.id, name: result.name, url: episode.url} }))
-      //                       )
-      //   console.log(this.state.locations_chars)
-      //   this.state.episodes.push(this.state.locations_chars)
-      // }
 
     }
 
