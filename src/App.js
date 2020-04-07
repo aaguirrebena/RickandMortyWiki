@@ -110,7 +110,7 @@ class App extends Component {
     }
 
 
-    else if (filter != ""){
+    else if (filter !== ""){
 
       fetch(url_character)
       .then(response => response.json())

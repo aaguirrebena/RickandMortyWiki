@@ -1,16 +1,25 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 
 const PlanetInfo = props => {
 
     const {name, type, dimension, residents} = props.location;
 
-    function handle_click (ids) {
-        const use = ids.split("/");
-        const len = use.length-1
-        const id = use[len]
+    const [residentData, setResidentData] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-        props.searchData("character_id", "1", `${id}`);
+    useEffect(() => {
+        const promiseArray = residents.map(e => fetch(e).then(response => response.json()));
+        Promise.all(promiseArray).then(result => {
+            setResidentData(result);
+            setLoading(false);
+        });
+    }, [residents]);
+
+    function handleClick (e, resident) {
+
+        props.searchData("character_id", "1", resident.id);
     }
+
 
     return (
         <div className="row">
@@ -27,16 +36,22 @@ const PlanetInfo = props => {
                 <div className="card">
                     <div className="card-body">
                         <p className="card-text">Residents: </p>
+                        {loading && "LOADING..."}
                         <ul>
-                        {residents.map(r =>
-                                <li><a href= "#" onClick={() => handle_click(r)} className="card-text "> {r}  </a></li>
-                            )}
+                            {!loading &&
+                                residentData.map(resident => (
+                                    <li>
+                                        <a href="#" onClick={e => handleClick(e, resident)}
+                                        className="card-text"> {resident.name}</a>
+                                    </li>
+                                ))
+                            }
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default PlanetInfo;

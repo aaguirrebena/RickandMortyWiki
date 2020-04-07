@@ -4,11 +4,21 @@ const EpisodeInfo = (props) => {
 
     const {name, air_date, episode, characters} = props.episode;
 
-    function handle_click (ids) {
-        const use = ids.split("/");
-        const len = use.length-1
-        const id = use[len]
-        props.searchData("character_id", "1", `${id}`);
+    const [charNames, setChar] = useState([]);
+    const [loading, setLoading] =  useState(true);
+
+    useEffect(() => {
+        const promiseArray = characters.map(e => fetch(e).then(response => response.json()));
+        Promise.all(promiseArray).then(result => {
+            setChar(result);
+            setLoading(false);
+        });
+    }, [characters]);
+
+    function handleClick (e, character) {
+        e.preventDefault();
+
+        props.searchData("character_id", "1", character.id);
     }
     return (
         <div className="row">
@@ -25,10 +35,14 @@ const EpisodeInfo = (props) => {
                 <div className="card">
                     <div className="card-body">
                         <p className="card-text">Characters: </p>
+                        {loading && "LOADING..."}
                         <ul>
-                            {characters.map(c =>
-                                <li><a href="#" onClick={() => handle_click(c)} className="card-text "> {c} </a></li>
-                            )}
+                            {!loading &&
+                            charNames.map(character => (
+                                <li>
+                                    <a href="#" onClick={e => handleClick(e, character)} className="card-text"> {character.name} </a>
+                                </li>
+                            ))}
                         </ul>
                     </div>
                 </div>
