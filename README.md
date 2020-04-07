@@ -8,7 +8,8 @@ Página en donde se pueden buscar 3 tipos de información asociados a Rick and m
 - Locations: se busca un lugar a partir del nombre, se mostraran todas las coincidencias.
 
 Se puede iniciar de maner locar escribiendo en terminal desde directorio correspondiente:
-
+`npm install`
+Luego, 
 `npm start`
 
 O bien se puede ingresar a través del siguiente [link][blog].
