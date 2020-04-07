@@ -10,6 +10,7 @@ Página en donde se pueden buscar 3 tipos de información asociados a Rick and m
 Se puede iniciar de maner locar escribiendo en terminal desde directorio correspondiente:
 
 `npm install`
+
 Luego, 
 
 `npm start`
