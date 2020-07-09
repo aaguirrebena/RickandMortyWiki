@@ -10,7 +10,7 @@ class App extends Component {
     episodes : [],
     characters : [],
     locations : [],
-    locations_chars : [],
+    home : true,
     page : '1', // first page
     max_page : '' // n° pages request
   }
@@ -54,11 +54,12 @@ class App extends Component {
     });
   }
 
-  searchData =  (filter, page, ids) => {
+  searchData =  (filter, page, ids, home) => {
     this.setState({
       filter,
       page,
-      ids
+      ids,
+      home
     }, () =>{
       this.apiRequest();
     })
@@ -68,73 +69,246 @@ class App extends Component {
     const filter = this.state.filter;
     const page = this.state.page;
     const ids = this.state.ids;
-    const url_character = `https://rickandmortyapi.com//api/character/?page=${page}&name=${filter}`;
-    const url_character_id = `https://rickandmortyapi.com//api/character/${ids}`;
-
-
-    const url_location = `https://rickandmortyapi.com//api/location/?page=${page}&name=${filter}`;
-    const url_location_id = `https://rickandmortyapi.com//api/location/${ids}`
-
-    const url_episode = `https://rickandmortyapi.com//api/episode/?name=${filter}`;
-    const url_episode_id = `https://rickandmortyapi.com//api/episode/${ids}`
+    const url = "https://rickandmortyapi.com/graphql";
 
     if (filter === "home_page"){
-      fetch(`https://rickandmortyapi.com//api/episode?page=${this.state.page}`)
-      .then(response => response.json())
-      .then(result => this.setState({ episodes : result.results , max_page : result.info.pages, requestEp_Failed: false }) )
+
+      fetch(url, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            query: `
+                query {
+                  episodes(page:${page}){
+                    info{
+                      pages
+                    }
+                    results{
+                      air_date
+                      characters{
+                        id
+                        name
+                      }
+                      created
+                      episode
+                      id
+                      name
+                    }
+                  }
+                }
+            `
+        })
+      })
+      .then(res => res.json())
+      .then(data => this.setState({ episodes : data.data.episodes.results , max_page : data.data.episodes.info.pages, home : true, requestEp_Failed: false }))
+
     }
 
     else if (filter === "character_id"){
-        fetch(url_character_id)
-        .then(response => response.json())
-        .then(result => this.setState({ characters : [{id: result.id, url: result.url, image: result.image, name: result.name, species: result.species, status: result.status, type: result.type, gender: result.gender, origin: result.origin, location: result.location,
-        episode: result.episode}], locations: [], episodes: [], requestCharId_Failed: false }) )
-        .catch((error) => { this.setState({ requestCharId_Failed: true })
+
+        fetch(url, {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({
+              query: `
+              query {
+                character(id:${ids}) {
+                  id
+                  image
+                  name
+                  species
+                  status
+                  type
+                  gender
+                  location{
+                    id
+                    name
+                  }
+                  origin{
+                    id
+                    name
+                  }
+                  episode{
+                    id
+                    name
+                  }
+                }
+              }
+              `
+          })
         })
+        .then(res => res.json())
+        .then(result => this.setState({ characters : [{id: result.data.character.id, image: result.data.character.image, name: result.data.character.name, species: result.data.character.species, status: result.data.character.status, type: result.data.character.type, gender: result.data.character.gender, origin: result.data.character.origin, location: result.data.character.location,
+        episode: result.data.character.episode}], home : false, locations: [], episodes: [], requestCharId_Failed: false }))
     }
 
     else if (filter === "location_id"){
-      fetch(url_location_id)
+
+      fetch(url, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            query: `
+            query {
+              location(id:${ids}) {
+                 id
+                name
+                type
+                dimension
+                residents{
+                  id
+                  name
+                }
+              }
+            }
+            `
+        })
+      })
       .then(response => response.json())
-      .then(result => this.setState({ locations : [{id: result.id, name: result.name, type: result.type, dimension: result.dimension, residents: result.residents}], characters: [], requestLocId_Failed: false  }) )
+      .then(result => this.setState({ locations : [{id: result.data.location.id, name: result.data.location.name, type: result.data.location.type, dimension: result.data.location.dimension, residents: result.data.location.residents}], home: false, characters: [], episodes: [], requestLocId_Failed: false  }))
       .catch((error) => { this.setState({ requestLocId_Failed: true })
       })
     }
 
     else if (filter === "episode_id"){
-      fetch(url_episode_id)
+
+      fetch(url, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            query: `
+            query {
+              episode(id:${ids}) {
+                id
+                name
+                air_date
+                characters{
+                  id
+                  name
+                }
+              }
+            }
+            `
+        })
+      })
       .then(response => response.json())
-      .then(result => this.setState({ episodes : [{id: result.id, name: result.name, air_date: result.air_date, episode: result.episode, characters: result.characters}], characters: [], requestEpId_Failed: false  }) )
+      .then(result => this.setState({ episodes : [{id: result.data.episode.id, name: result.data.episode.name, air_date: result.data.episode.air_date, episode: result.data.episode.episode, characters: result.data.episode.characters}], home : false, characters: [], locations: [], requestEpId_Failed: false  }) )
       .catch((error) => { this.setState({ requestEpId_Failed: true })
       })
     }
 
+    else if (filter !== ""){ //Filter by part of Name
 
-    else if (filter !== ""){
-
-      fetch(url_character)
-      .then(response => response.json())
-      .then(result => this.setState({ characters : result.results , max_page : result.info.pages, requestChar_Failed: false }) )
+      // Characters by Name
+      fetch(url, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            query: `
+            query {
+              characters(page:${page}, filter: {name:"${filter}"}) {
+                  info{
+                    pages
+                    count
+                  }
+                  results{
+                      id
+                      image
+                      name
+                      species
+                      status
+                      type
+                      gender
+                      location{
+                        id
+                        name
+                      }
+                      origin{
+                        id
+                        name
+                      }
+                      episode{
+                        id
+                        name
+                      }
+                  }
+        			}
+            }
+            `
+        })
+      })
+      .then(res => res.json())
+      .then(result => this.setState({ characters : result.data.characters.results , max_page : result.data.characters.info.pages, home: true, requestChar_Failed: false }) )
       .catch((error) => {
-        this.setState({ characters : [], requestChar_Failed: true })
+        this.setState({ characters : [], home : true, requestChar_Failed: true })
       })
 
-      fetch(url_location)
+      // Locations by Name
+      fetch(url, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            query: `
+              query {
+                locations(page:${page}, filter: {name:"${filter}"}) {
+                    info{
+                      pages
+                      count
+                    }
+                    results{
+                      id
+                      name
+                      type
+                      dimension
+                      residents{
+                        id
+                        name
+                      }
+                    }
+                }
+              }
+            `
+        })
+      })
       .then(response => response.json())
-      .then(result => this.setState({ locations : result.results , max_page : result.info.pages, requestLoc_Failed: false }) )
+      .then(result => this.setState({ locations : result.data.locations.results , max_page : result.data.locations.info.pages, home : true, requestLoc_Failed: false }) )
       .catch((error) => {
-        this.setState({ locations : [], requestLoc_Failed: true })
+        this.setState({ locations : [], home : true, requestLoc_Failed: true })
       })
 
-      fetch(url_episode)
-      .then(response => response.json())
-      .then(result => this.setState({ episodes : result.results, max_page : result.info.pages, requestEp_Failed: false }) )
-      .catch((error) => {
-        this.setState({ episodes : [], requestEp_Failed: true })
+      // Episodes by Name
+      fetch(url, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            query: `
+            query {
+              episodes(page:${page}, filter: {name: "${filter}"}){
+                info{
+                  pages
+                }
+                results{
+                  air_date
+                  characters{
+                    id
+                    name
+                  }
+                  created
+                  episode
+                  id
+                  name
+                }
+              }
+            }
+            `
+        })
       })
-
+      .then(response => response.json())
+      .then(result => this.setState({ episodes : result.data.episodes.results, max_page : result.data.episodes.info.pages, home: true, requestEp_Failed: false }))
+      .catch((error) => {
+        this.setState({ episodes : [], home : true, requestEp_Failed: true })
+      })
     }
-
   }
 
   render () {
@@ -149,8 +323,10 @@ class App extends Component {
           />
         </div>
 
+
         <div className="row justify-content-center">
           <Response
+            home = {this.state.home}
             characters = {this.state.characters}
             locations = {this.state.locations}
             episodes = {this.state.episodes}

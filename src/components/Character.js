@@ -1,35 +1,30 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 
 const CharInfo = props => {
 
-    const {image, name, species, status, type, gender, origin, location, episode} = props.character;
+    const {id, image, name, species, status, type, gender, origin, location, episode} = props.character;
+    const home = props.home
 
-    const [episodesData, setEpisodesData] = useState([]);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        const promiseArray = episode.map(e => fetch(e).then(response => response.json()));
-        Promise.all(promiseArray).then(result => {
-            setEpisodesData(result);
-            setLoading(false);
-        });
-    }, [episode]);
-
-    function handle_episode (e, episode) {
+    function handleEpisode (e, episodeId) {
         e.preventDefault();
-        props.searchData("episode_id", "1", episode.id);
+        props.searchData("episode_id", "1", episodeId);
     }
 
-    function handle_origin (e) {
+    function handleOrigin (e, originId) {
         e.preventDefault();
 
-        props.searchData(origin.name, "1", "");
+        props.searchData("location_id", "1", originId);
     }
 
-    function handle_location (e) {
+    function handleLocation (e, locationId) {
         e.preventDefault();
 
-        props.searchData(location.name, "1", "");
+        props.searchData("location_id", "1", locationId);
+    }
+
+    function handleCharacter (e, characterId) {
+
+        props.searchData("character_id", "1", characterId);
     }
 
     return (
@@ -37,34 +32,51 @@ const CharInfo = props => {
             <div className="col-4">
                 <div className="card">
                     <img src={image} alt={name} className="card-img-top" />
+                    {home &&
+                        <div className="card-body">
+                        <p> <a href= "#" onClick={e=> handleCharacter(e, id)} className="card-text">Name:      {name} </a></p>
+                        </div>
+                    }
+                    {!home &&
                     <div className="card-body">
                         <p className="card-text">Name: {name} </p>
                         <p className="card-text">Species: {species} </p>
                         <p className="card-text">Status: {status} </p>
                         <p className="card-text">Type: {type} </p>
                         <p className="card-text">Gender: {gender} </p>
-                        <p><a href= "#" onClick={handle_origin} className="card-text">Origin: {origin.name}</a></p>
-                        <p><a href= "#" onClick={handle_location} className="card-text">Location: {location.name} </a></p>
-                        <a href={image} target="_blank" className="btn btn-primary btn-block">Character View</a>
+                        <p>
+                        {origin.name !== "unknown"
+                            ?<a href= "#" onClick={e=> handleOrigin(e, origin.id)} className="card-text">Origin: {origin.name}</a>
+                            :<a className="card-text">Origin: {origin.name}</a>
+                        }
+                        </p>
+                        <p>{location.name !== "unknown"
+                            ?<a href= "#" onClick={e=> handleLocation(e, location.id)} className="card-text">Location: {location.name} </a>
+                            :<a className="card-text">Location: {location.name} </a>
+                        }
+                        </p>
+                        <a href={image} target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-block">Character View</a>
                     </div>
+                    }
                 </div>
             </div>
+            {!home &&
             <div className="col-8">
                 <div className="card">
                     <div className="card-body">
                         <p className="card-text">Episodes: </p>
-                        {loading && "LOADING..."}
                         <ul>
-                            {!loading &&
-                            episodesData.map(episode => (
+                            {
+                            episode.map(ep => (
                                 <li>
-                                    <a href="#" onClick={e => handle_episode(e, episode)} className="card-text"> {episode.name} </a>
+                                    <a href="#" onClick={e => handleEpisode(e, ep.id)} className="card-text"> {ep.name} </a>
                                 </li>
                             ))}
                         </ul>
                     </div>
                 </div>
             </div>
+            }
         </div>
     );
 };

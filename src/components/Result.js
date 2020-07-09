@@ -10,6 +10,7 @@ class Response extends Component {
         const characters = this.props.characters;
         const locations = this.props.locations;
         const episodes = this.props.episodes;
+        const home = this.props.home
 
         return (
             <React.Fragment>
@@ -19,6 +20,7 @@ class Response extends Component {
                         <CharInfo
                             key={character.id}
                             character={character}
+                            home = {home}
                             searchData={this.props.searchData}
                         />
                     ) ) }
@@ -27,6 +29,7 @@ class Response extends Component {
                         <PlanetInfo
                             key={location.id}
                             location={location}
+                            home = {home}
                             searchData={this.props.searchData}
                         />
                     ) ) }
@@ -35,6 +38,7 @@ class Response extends Component {
                         <EpisodeInfo
                             key={episode.id}
                             episode={episode}
+                            home = {home}
                             searchData={this.props.searchData}
                         />
                     ) ) }

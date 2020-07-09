@@ -20,7 +20,7 @@ class Wiki extends Component {
 
                     <div className="form-group col-md-8">
                         <input ref={this.searchRef} type="text" className="form-control
-                        form-control-lg" placeholder="Search Something... ex: S01E01" />
+                        form-control-lg" placeholder="Search Something... ex: Pilot" />
                     </div>
 
                     <div className="form-group col-md-4">
